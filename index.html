@@ -24,7 +24,7 @@ body:not(.coverActive) #welcomeCover{display:none}
 <section id="welcomeCover" class="cover" aria-label="Welcome to My First Words">
   <div class="coverSky"><span aria-hidden="true">☀️</span><span aria-hidden="true">🌈</span><span aria-hidden="true">🦋</span></div>
   <div class="coverHeading"><div class="coverTitle">My First Words</div><div id="coverSub">20 Games With Sound</div></div>
-  <picture class="coverPicture"><source srcset="cover-original.webp" type="image/webp"><img class="coverIllustration" src="cover-art.svg" alt="My First Words cover: smiling teddy bear and friendly animals beneath a rainbow" decoding="async"></picture>
+  <div class="coverPicture"><img class="coverIllustration" src="cover-original.webp" onerror="this.onerror=null;this.src='cover-art.svg'" alt="My First Words cover: smiling teddy bear and friendly animals beneath a rainbow" decoding="async"></div>
   <p id="coverText">Let's learn and play together!</p>
   <button class="button coverPlay" id="startPlaying">▶ Start Playing</button>
   <button class="button soft coverLanguage" id="coverLanguage">🇺🇸 English / 🇪🇸 Español</button>
