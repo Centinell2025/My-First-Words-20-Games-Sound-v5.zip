@@ -13,7 +13,34 @@ const GAMES=[["🐶","Animals","Animales",[["🐶","Dog","Perro"],["🐱","Cat",
 let lang='en',muted=false,gameIndex=-1,step=0,correct=false,audioContext=null;
 const el=id=>document.getElementById(id);const sayWord=item=>item[lang==='en'?1:2];const category=g=>g[lang==='en'?1:2];
 const tr=(en,es)=>lang==='en'?en:es;
-function talk(text){if(muted)return;if(!('speechSynthesis'in window)){el('feedback').textContent=tr('Speech is unavailable in this browser.','La voz no está disponible en este navegador.');return;}try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang==='en'?'en-US':'es-ES';u.rate=.78;u.pitch=1.08; speechSynthesis.speak(u);}catch(e){console.warn('Speech failed',e)}}
+// Spoken words: choose a matching native voice and keep pronunciation natural.
+let availableVoices=[];
+function refreshVoices(){if('speechSynthesis' in window)availableVoices=window.speechSynthesis.getVoices()||[];}
+refreshVoices();
+if('speechSynthesis' in window && window.speechSynthesis.addEventListener){window.speechSynthesis.addEventListener('voiceschanged',refreshVoices);}
+function chosenVoice(){
+  const desired=lang==='en'?'en-US':'es-ES',base=lang==='en'?'en':'es';
+  const candidates=availableVoices.filter(v=>v.lang.toLowerCase().startsWith(base));
+  const score=v=> (v.lang.toLowerCase()===desired.toLowerCase()?8:0)+(v.localService?3:0)+(v.default?2:0)+(/natural|enhanced|premium|neural/i.test(v.name)?2:0);
+  return candidates.sort((a,b)=>score(b)-score(a))[0]||null;
+}
+function talk(text){
+  if(muted)return;
+  if(!('speechSynthesis' in window)){el('feedback').textContent=tr('Speech is unavailable on this device.','La voz no está disponible en este dispositivo.');return;}
+  try{
+    refreshVoices();
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(String(text));
+    const voice=chosenVoice();
+    u.lang=lang==='en'?'en-US':'es-ES';
+    if(voice)u.voice=voice;
+    u.rate=.86; // Slow enough for first words without distorted vowel sounds.
+    u.pitch=1.0; // Avoid high-pitched robotic speech.
+    u.volume=1;
+    u.onerror=(event)=>{if(event.error!=='interrupted'&&event.error!=='canceled')console.warn('Speech playback issue:',event.error);};
+    speechSynthesis.speak(u);
+  }catch(e){console.warn('Speech failed',e)}
+}
 function tone(freq=650,duration=.12){if(muted)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audioContext=audioContext||new AC();if(audioContext.state==='suspended')audioContext.resume();const o=audioContext.createOscillator(),gain=audioContext.createGain();o.type='sine';o.frequency.value=freq;gain.gain.setValueAtTime(.06,audioContext.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+duration);o.connect(gain);gain.connect(audioContext.destination);o.start();o.stop(audioContext.currentTime+duration)}catch(e){console.warn(e)}}
 function effects(){tone(450,.16);setTimeout(()=>tone(660,.12),170)}
 function renderHome(){el('tagline').textContent=tr('Listen • Learn • Play','Escucha • Aprende • Juega');el('welcome').textContent=tr("Let's play together!",'¡Vamos a jugar!');el('subtitle').textContent=tr('20 playful games with sound','20 juegos divertidos con sonido');el('pick').textContent=tr('Choose a game','Elige un juego');el('test').textContent=tr('🔊 Test sound','🔊 Probar sonido');el('parentTitle').textContent=tr('💜 For parents','💜 Para familias');el('parentIntro').textContent=tr('Stay and play with your child. Repeat words, make gestures, and use real objects. For the youngest toddlers, prioritize off-screen interaction.','Jueguen juntos. Repitan palabras, hagan gestos y usen objetos reales. Para los más pequeños, den prioridad a la interacción sin pantallas.');el('ageLabel').textContent=tr('Age:','Edad:');el('lang').textContent=lang==='en'?'🇺🇸 EN':'🇪🇸 ES';el('footer').textContent=tr('No ads · No microphone · Adult supervision · Short, shared play sessions','Sin anuncios · Sin micrófono · Supervisión adulta · Sesiones breves y compartidas');el('tiles').replaceChildren();GAMES.forEach((g,i)=>{const b=document.createElement('button');b.className='tile';const icon=document.createElement('span');icon.className='emoji';icon.textContent=g[0];const title=document.createElement('strong');title.textContent=category(g);const help=document.createElement('div');help.className='muted small';help.textContent=tr('🔊 Play','🔊 Jugar');b.append(icon,title,help);b.onclick=()=>{gameIndex=i;step=0;el('home').classList.add('hidden');el('game').classList.remove('hidden');renderGame();};el('tiles').append(b)});updateAge();}
