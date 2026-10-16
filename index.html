@@ -24,4 +24,24 @@ el('sound').onclick=()=>{muted=!muted;el('sound').textContent=muted?'🔇':'🔊
 el('lang').onclick=()=>{lang=lang==='en'?'es':'en';document.documentElement.lang=lang;renderHome();if(gameIndex>=0&&!el('game').classList.contains('hidden'))renderGame()};
 el('age').onchange=updateAge;el('back').onclick=()=>{if('speechSynthesis'in window)speechSynthesis.cancel();el('game').classList.add('hidden');el('home').classList.remove('hidden')};el('repeat').onclick=()=>talk(sayWord(GAMES[gameIndex][3][step%4]));el('soundEffect').onclick=effects;el('next').onclick=()=>{step++;renderGame()};renderHome();
 if('serviceWorker' in navigator && location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script><style>
+/* Touch-first toddler experience */ 
+.tile,.choice{transition:transform .12s ease,box-shadow .12s ease}
+.tile:active,.choice:active{transform:scale(.96)}
+.tile:focus-visible,.choice:focus-visible{box-shadow:0 0 0 5px #239f92}
+#progress{margin:12px auto 16px;max-width:320px;font-weight:700;font-size:.92rem}
+#progressTrack{height:12px;background:#f0e3f6;border-radius:99px;overflow:hidden;margin-top:6px}
+#progressFill{height:100%;width:0;background:#3caa86;transition:width .25s}
+@media (prefers-reduced-motion:reduce){.tile,.choice,#progressFill{transition:none}}
+</style>
+<script>
+/* Local, private session progress — no account, no tracking. */
+(function(){
+const wordsFinished=new Set();
+const read=(id)=>document.getElementById(id);
+const progress=document.createElement('div');progress.id='progress';progress.innerHTML='<span id="progressText">Words explored: 0</span><div id="progressTrack" aria-hidden="true"><div id="progressFill"></div></div>';
+const section=read('game');const panel=section&&section.querySelector('.panel');if(panel)panel.insertBefore(progress,panel.querySelector('#choices'));
+const choices=read('choices');
+if(choices){choices.addEventListener('click',event=>{let button=event.target.closest('button');if(!button||!choices.contains(button))return;const target=read('target')?.textContent||'';const text=button.textContent.trim();if(target.endsWith(text)){wordsFinished.add(target);read('progressText').textContent=(document.documentElement.lang==='es'?'Palabras exploradas: ':'Words explored: ')+wordsFinished.size;read('progressFill').style.width=Math.min(100,wordsFinished.size/80*100)+'%';}})}
+})();
 </script></body></html>
