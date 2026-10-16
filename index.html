@@ -19,12 +19,12 @@
 body.coverActive header,body.coverActive #home,body.coverActive #game,body.coverActive .foot{display:none!important}
 body:not(.coverActive) #welcomeCover{display:none}
 @media(max-width:360px){.coverFriends{font-size:2.4rem}.coverSky{gap:5px}.cover{padding:10px}}
-</style></head><body><main>
+.coverPicture{display:block;width:100%;max-width:420px;margin:0 auto}.coverIllustration{display:block;width:100%;height:auto;max-height:44vh;object-fit:contain;border-radius:22px;box-shadow:0 7px 21px #4e45602c}.cover{overflow:hidden}.coverPlay{position:relative;z-index:2} </style></head><body><main>
 <header><div><h1>🌈 My First Words</h1><div class="muted" id="tagline">Listen • Learn • Play</div></div><div class="row"><button class="button soft small" id="lang" aria-label="Change language">🇺🇸 EN</button><button class="button soft small" id="sound" aria-label="Mute or unmute">🔊</button></div></header>
 <section id="welcomeCover" class="cover" aria-label="Welcome to My First Words">
   <div class="coverSky"><span aria-hidden="true">☀️</span><span aria-hidden="true">🌈</span><span aria-hidden="true">🦋</span></div>
   <div class="coverHeading"><div class="coverTitle">My First Words</div><div id="coverSub">20 Games With Sound</div></div>
-  <div class="coverFriends" aria-hidden="true"><span>🐶</span><span class="coverBear"><svg viewBox="0 0 180 180" width="160" role="img" aria-label="Smiling teddy bear"><circle cx="45" cy="48" r="28" fill="#B77B48"/><circle cx="135" cy="48" r="28" fill="#B77B48"/><circle cx="45" cy="48" r="15" fill="#F4C99C"/><circle cx="135" cy="48" r="15" fill="#F4C99C"/><circle cx="90" cy="95" r="70" fill="#B77B48"/><ellipse cx="90" cy="119" rx="37" ry="30" fill="#FFE0AD"/><circle cx="65" cy="91" r="7" fill="#30202E"/><circle cx="115" cy="91" r="7" fill="#30202E"/><ellipse cx="90" cy="111" rx="12" ry="9" fill="#42252B"/><path d="M69 125Q90 151 111 125" stroke="#42252B" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="52" cy="114" rx="10" ry="6" fill="#F49D8F" opacity=".75"/><ellipse cx="128" cy="114" rx="10" ry="6" fill="#F49D8F" opacity=".75"/></svg></span><span>🐱</span></div>
+  <picture class="coverPicture"><source srcset="cover-original.webp" type="image/webp"><img class="coverIllustration" src="cover-art.svg" alt="My First Words cover: smiling teddy bear and friendly animals beneath a rainbow" decoding="async"></picture>
   <p id="coverText">Let's learn and play together!</p>
   <button class="button coverPlay" id="startPlaying">▶ Start Playing</button>
   <button class="button soft coverLanguage" id="coverLanguage">🇺🇸 English / 🇪🇸 Español</button>
