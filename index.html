@@ -19,7 +19,21 @@
 body.coverActive header,body.coverActive #home,body.coverActive #game,body.coverActive .foot{display:none!important}
 body:not(.coverActive) #welcomeCover{display:none}
 @media(max-width:360px){.coverFriends{font-size:2.4rem}.coverSky{gap:5px}.cover{padding:10px}}
-.coverPicture{display:block;width:100%;max-width:420px;margin:0 auto}.coverIllustration{display:block;width:100%;height:auto;max-height:44vh;object-fit:contain;border-radius:22px;box-shadow:0 7px 21px #4e45602c}.cover{overflow:hidden}.coverPlay{position:relative;z-index:2} </style></head><body><main>
+.coverPicture{display:block;width:100%;max-width:420px;margin:0 auto}.coverIllustration{display:block;width:100%;height:auto;max-height:44vh;object-fit:contain;border-radius:22px;box-shadow:0 7px 21px #4e45602c}.cover{overflow:hidden}.coverPlay{position:relative;z-index:2} </style><style>
+/* Responsive welcome screen designed for small phones and tablets */
+.cover{min-height:min(850px,calc(100dvh - 26px));padding:12px 14px 24px;gap:4px}
+.coverHeading{margin:5px 0 3px}
+.coverTitle{font-size:clamp(1.85rem,8vw,2.8rem)}
+#coverSub{margin-top:5px;font-size:.96rem}
+.coverSky{font-size:clamp(1.55rem,5vw,2.2rem)}
+.coverPicture{width:100%;max-width:470px;min-height:180px;max-height:46dvh;display:grid;place-items:center}
+.coverIllustration{width:100%;height:100%;max-height:46dvh;object-fit:contain;box-shadow:none}
+.coverPlay{width:min(95%,330px);min-height:68px}
+.coverLanguage{min-height:52px}
+#coverText{margin:4px 0}
+.coverParent{margin:7px 0 0}
+@media(max-height:700px){.cover{min-height:unset}.coverPicture,.coverIllustration{max-height:33dvh}.coverSky{display:none}.coverHeading{margin:2px 0}.coverParent{margin:0}}
+</style></head><body><main>
 <header><div><h1>🌈 My First Words</h1><div class="muted" id="tagline">Listen • Learn • Play</div></div><div class="row"><button class="button soft small" id="lang" aria-label="Change language">🇺🇸 EN</button><button class="button soft small" id="sound" aria-label="Mute or unmute">🔊</button></div></header>
 <section id="welcomeCover" class="cover" aria-label="Welcome to My First Words">
   <div class="coverSky"><span aria-hidden="true">☀️</span><span aria-hidden="true">🌈</span><span aria-hidden="true">🦋</span></div>
