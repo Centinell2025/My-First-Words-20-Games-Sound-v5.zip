@@ -133,7 +133,7 @@ body.coverActive main{max-width:1060px}
 #choices .choice strong{font-size:clamp(17px,4vw,23px)}
 #choices .choice.hint{background:#e5fae9;border-color:#26a56b;box-shadow:0 0 0 5px #bbf3cf}
 #target{font-size:clamp(1.6rem,5vw,2.15rem);color:#43306e;line-height:1.3}
-#game .actions button{min-height:62px}#next{min-height:64px;font-size:1.15rem}
+#game .actions button{min-height:62px}#next{min-height:64px;font-size:1.15rem}#next:disabled{opacity:.42;cursor:not-allowed}#game .choice{touch-action:manipulation}#feedback{font-size:1.12rem;line-height:1.4}#game .choice.hint{transition:box-shadow .15s ease}
 @media(max-width:360px){#choices .choice{min-height:145px}#choices .emoji{font-size:58px}}
 </style></head><body><main>
 <header><div><h1>🌈 My First Words Kids</h1><div class="muted" id="tagline">Listen • Learn • Play</div></div><div class="row"><button class="button soft small" id="lang" aria-label="Change language">🇺🇸 EN</button><button class="button soft small" id="sound" aria-label="Mute or unmute">🔊</button></div></header>
@@ -221,14 +221,15 @@ const g=GAMES[gameIndex],target=g[3][step%4];
 correct=false;
 el('gameEmoji').textContent=g[0];
 el('gameTitle').textContent=category(g);
-el('instructions').textContent=tr('Look! Touch the picture. 👆','¡Mira! Toca el dibujo. 👆');
+el('instructions').textContent=tr('Listen and touch. 👆','Escucha y toca. 👆');
 el('target').textContent=tr('Touch: ','Toca: ')+sayWord(target)+' '+target[0];
 el('repeat').textContent=tr('🔊 Hear word','🔊 Oír palabra');
 el('soundEffect').textContent=tr('🎵 Fun sound','🎵 Sonido divertido');
-el('next').textContent=tr('Next →','Siguiente →');
+el('next').textContent=tr('Next picture →','Otra imagen →');
+el('next').disabled=true;
 el('back').textContent=tr('← All games','← Todos los juegos');
 el('grownup').textContent=tr('💚 Play together','💚 Jueguen juntos');
-el('coach').textContent=tr('Name a real item, pause for your child to react, and praise every attempt.','Nombren un objeto real, esperen la reacción del niño y celebren cada intento.');
+el('coach').textContent=tr('Stay together. Say one word, point at a real object and stop whenever your child loses interest.','Acompañen al niño. Digan una palabra, señalen objetos reales y terminen cuando pierda interés.');
 el('feedback').textContent='';
 el('choices').replaceChildren();
 const distractor=g[3][(step+1)%4];
@@ -257,26 +258,27 @@ for(const {x} of items){
     if(correct)return;
     if(x===target){
       correct=true;
+      el('next').disabled=false;
       mark(b,'correct');
       buttons.forEach(other=>other.disabled=true);
       el('feedback').textContent=tr('Great job! 🌟','¡Muy bien! 🌟');
-      effects();talk(sayWord(x));
+      talk(tr('Well done! ','¡Muy bien! ')+sayWord(x));
     }else{
       const correctButton=buttons.find(other=>other.dataset.correct==='true');
       if(correctButton)correctButton.classList.add('hint');
       el('feedback').textContent=tr('Look here! 💛','¡Mira aquí! 💛');
-      talk(sayWord(target));
+      talk(tr('Look here. ','Mira aquí. ')+sayWord(target));
     }
   };
   el('choices').append(b);
 }
-talk(sayWord(target));
+talk(tr('Find the picture. ','Busca el dibujo. ')+sayWord(target));
 }
 
 el('voicePreview').onclick=()=>talk(tr('Hello! Apple. Ball. Teddy bear.','¡Hola! Manzana. Pelota. Osito.'));el('test').onclick=()=>{tone();talk(tr('Hello! Let us play together!','¡Hola! ¡Vamos a jugar!'))};
 el('sound').onclick=()=>{muted=!muted;el('sound').textContent=muted?'🔇':'🔊';if(muted&&window.speechSynthesis)speechSynthesis.cancel()};
 el('lang').onclick=()=>{lang=lang==='en'?'es':'en';document.documentElement.lang=lang;renderHome();if(gameIndex>=0&&!el('game').classList.contains('hidden'))renderGame()};
-el('age').onchange=updateAge;el('back').onclick=()=>{if('speechSynthesis'in window)speechSynthesis.cancel();el('game').classList.add('hidden');el('home').classList.remove('hidden')};el('repeat').onclick=()=>talk(sayWord(GAMES[gameIndex][3][step%4]));el('soundEffect').onclick=effects;el('next').onclick=()=>{step++;renderGame()};renderHome();
+el('age').onchange=updateAge;el('back').onclick=()=>{if('speechSynthesis'in window)speechSynthesis.cancel();el('game').classList.add('hidden');el('home').classList.remove('hidden')};el('repeat').onclick=()=>talk(tr('Find the picture. ','Busca el dibujo. ')+sayWord(GAMES[gameIndex][3][step%4]));el('soundEffect').onclick=effects;el('next').onclick=()=>{step++;renderGame()};renderHome();
 if('serviceWorker' in navigator && location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script><style>
 /* Touch-first toddler experience */ 
