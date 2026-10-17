@@ -65,11 +65,38 @@ body:not(.coverActive) #welcomeCover{display:none}
 .cover-hotspot.en-spot,.cover-hotspot.es-spot{background:#edf9ff}
 .official-cover-actions #coverFallbackPlay{display:none}
 @media(min-width:560px){.official-image-wrap{grid-template-columns:repeat(5,minmax(0,1fr))}.official-image{grid-column:1/-1}.play-spot{grid-column:1/-1}.en-spot,.es-spot{grid-column:span 2}.animals-spot,.food-spot,.toys-spot,.vehicles-spot,.more-spot{font-size:.86rem;padding:8px 3px}}
+
+/* Colorful responsive official cover: buttons align to picture art and work on phones. */
+body{background:#d9f5ff;color:#21344d}
+main:has(#welcomeCover){max-width:1120px;padding:12px 14px 50px}
+.official-cover{padding:0;text-align:center;border-radius:23px;box-shadow:0 16px 50px #0a5a7b2c;background:#fff;overflow:hidden}
+.official-image-wrap{position:relative!important;display:block!important;width:100%;padding:0!important;overflow:hidden!important;aspect-ratio:1672/941;border-radius:18px;background:#b3ebff}
+.official-image{width:100%;height:100%;display:block;object-fit:cover;aspect-ratio:1672/941;border-radius:0!important}
+.official-image-wrap .cover-hotspot{position:absolute!important;display:block;min-height:0;min-width:0;margin:0;padding:0!important;border:0!important;box-shadow:none!important;outline-offset:-4px;border-radius:18px;background:transparent!important;color:transparent!important;font-size:0!important;text-shadow:none;cursor:pointer}
+.official-image-wrap .cover-hotspot:focus-visible{outline:5px solid #fff!important;box-shadow:0 0 0 8px #164ac4!important}
+.official-image-wrap .play-spot{left:34%;top:66%;width:33%;height:14%}
+.official-image-wrap .en-spot{left:2%;top:2%;width:12%;height:9%}
+.official-image-wrap .es-spot{left:14%;top:2%;width:12%;height:9%}
+.official-image-wrap .animals-spot{left:5%;top:79%;width:18%;height:20%}
+.official-image-wrap .food-spot{left:24%;top:79%;width:18%;height:20%}
+.official-image-wrap .toys-spot{left:42%;top:79%;width:18%;height:20%}
+.official-image-wrap .vehicles-spot{left:60%;top:79%;width:18%;height:20%}
+.official-image-wrap .more-spot{left:78%;top:79%;width:21%;height:20%}
+.official-cover-actions{padding:12px 14px 0;margin:0;justify-content:center}
+.official-cover-actions #coverFallbackPlay{display:inline-flex;align-items:center;justify-content:center}
+.official-cover-actions .button{min-height:48px}
+.official-cover .coverParent{padding:0 10px 14px}
+@media(max-width:540px){
+main:has(#welcomeCover){padding:8px 5px 40px}
+.official-cover{border-radius:14px}
+.official-image-wrap{border-radius:10px}
+.official-cover-actions .button{font-size:14px;min-height:46px}
+}
 </style></head><body><main>
 <header><div><h1>🌈 My First Words</h1><div class="muted" id="tagline">Listen • Learn • Play</div></div><div class="row"><button class="button soft small" id="lang" aria-label="Change language">🇺🇸 EN</button><button class="button soft small" id="sound" aria-label="Mute or unmute">🔊</button></div></header>
 <section id="welcomeCover" class="official-cover" aria-label="Welcome to My First Words">
 <div class="official-image-wrap">
-<img class="official-image" src="cover-art.svg" alt="My First Words — colorful illustrated welcome image with animals">
+<img class="official-image" src="cover-official.webp" alt="My First Words — 20 Games With Sound, colorful cover with teddy bear and animals" onerror="this.onerror=null;this.src='cover-art.svg'">
 <button class="cover-hotspot play-spot" id="startPlaying" aria-label="Start Playing">▶ Start Playing</button>
 <button class="cover-hotspot en-spot" id="coverEnglish" aria-label="English">🇺🇸 English</button>
 <button class="cover-hotspot es-spot" id="coverSpanish" aria-label="Español">🇪🇸 Español</button>
