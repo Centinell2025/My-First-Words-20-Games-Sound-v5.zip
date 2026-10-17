@@ -92,11 +92,45 @@ main:has(#welcomeCover){padding:8px 5px 40px}
 .official-image-wrap{border-radius:10px}
 .official-cover-actions .button{font-size:14px;min-height:46px}
 }
+
+/* Mobile-friendly fallbacks while the original cover-official.webp is not in GitHub. */
+body.coverActive{background:linear-gradient(145deg,#b2eeff,#e4f9ff 45%,#fff0be)}
+body.coverActive main{max-width:1060px}
+.official-cover{border:4px solid #fff;border-radius:28px;box-shadow:0 16px 45px #035c8d28}
+.official-cover .official-image-wrap{aspect-ratio:1536/1024}
+.official-cover .official-image{aspect-ratio:1536/1024;object-fit:fill}
+.official-cover .cover-hotspot{z-index:2}
+.official-cover .cover-hotspot:active{outline:4px solid #fdf5b1!important}
+.official-cover.cover-placeholder{background:linear-gradient(180deg,#69cfff,#ddf8ff 65%,#d2f6b8)}
+.official-cover.cover-placeholder .official-image-wrap{aspect-ratio:auto;display:flex!important;align-items:center;flex-direction:column;gap:0;overflow:visible!important}
+.official-cover.cover-placeholder .official-image{aspect-ratio:auto!important;max-height:430px;width:min(100%,660px);height:auto;object-fit:contain;margin:0 auto}
+.official-cover.cover-placeholder .official-image-wrap .cover-hotspot{position:static!important;display:inline-flex!important;justify-content:center;align-items:center!important;background:#fff!important;color:#16415a!important;font-size:clamp(14px,2.5vw,18px)!important;text-shadow:none!important;border:2px solid #b5e3fb!important;border-radius:16px!important;padding:12px!important;min-height:58px!important;width:auto!important;height:auto!important;box-shadow:0 5px 0 #2b9fd53b!important}
+.official-cover.cover-placeholder .official-image-wrap{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px!important}
+.official-cover.cover-placeholder .official-image{grid-column:1/-1}
+.official-cover.cover-placeholder .play-spot{grid-column:1/-1;background:#19a954!important;color:#fff!important;font-size:clamp(19px,4vw,26px)!important;border-color:#068f3a!important}
+.official-cover.cover-placeholder .en-spot,.official-cover.cover-placeholder .es-spot{background:#e9f8ff!important}
+.official-cover.cover-placeholder .animals-spot{background:#ffe3ef!important}
+.official-cover.cover-placeholder .food-spot{background:#fff5b8!important}
+.official-cover.cover-placeholder .toys-spot{background:#d6f3ff!important}
+.official-cover.cover-placeholder .vehicles-spot{background:#f1ddff!important}
+.official-cover.cover-placeholder .more-spot{background:#dbffdc!important;grid-column:1/-1}
+@media(min-width:650px){
+.official-cover.cover-placeholder .official-image-wrap{grid-template-columns:repeat(5,minmax(0,1fr))}
+.official-cover.cover-placeholder .play-spot{grid-column:1/-1}
+.official-cover.cover-placeholder .en-spot,.official-cover.cover-placeholder .es-spot{grid-column:span 2}
+.official-cover.cover-placeholder .more-spot{grid-column:auto}
+}
+@media(max-width:540px){
+.official-cover{border-width:2px;border-radius:16px}
+.official-cover .official-image-wrap{border-radius:12px}
+.official-cover-actions{gap:8px}
+.official-cover .coverParent{font-size:13px}
+}
 </style></head><body><main>
 <header><div><h1>🌈 My First Words</h1><div class="muted" id="tagline">Listen • Learn • Play</div></div><div class="row"><button class="button soft small" id="lang" aria-label="Change language">🇺🇸 EN</button><button class="button soft small" id="sound" aria-label="Mute or unmute">🔊</button></div></header>
 <section id="welcomeCover" class="official-cover" aria-label="Welcome to My First Words">
 <div class="official-image-wrap">
-<img class="official-image" src="cover-official.webp" alt="My First Words — 20 Games With Sound, colorful cover with teddy bear and animals" onerror="this.onerror=null;this.src='cover-art.svg'">
+<img class="official-image" src="cover-official.webp" alt="My First Words — 20 Games With Sound, colorful cover with teddy bear and animals" onerror="this.onerror=null;this.closest('.official-cover').classList.add('cover-placeholder');this.src='cover-art.svg'">
 <button class="cover-hotspot play-spot" id="startPlaying" aria-label="Start Playing">▶ Start Playing</button>
 <button class="cover-hotspot en-spot" id="coverEnglish" aria-label="English">🇺🇸 English</button>
 <button class="cover-hotspot es-spot" id="coverSpanish" aria-label="Español">🇪🇸 Español</button>
