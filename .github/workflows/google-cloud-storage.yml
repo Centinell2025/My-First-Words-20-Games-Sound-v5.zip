@@ -1,0 +1,57 @@
+name: Publish My First Words to Google Cloud Storage
+
+# Runs ONLY when manually triggered and configured by the repository owner.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  upload:
+    # Configure these three GitHub Actions repository variables first.
+    if: ${{ vars.GCS_BUCKET != '' && vars.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && vars.GCP_SERVICE_ACCOUNT != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out app
+        uses: actions/checkout@v4
+
+      - name: Authenticate securely with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Stage public application files only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/my-first-words-site"
+          for f in index.html sw.js manifest.webmanifest icon.svg cover-art.svg; do
+            test -f "$f"
+            cp "$f" "$RUNNER_TEMP/my-first-words-site/"
+          done
+          if test -f cover-official.webp; then
+            cp cover-official.webp "$RUNNER_TEMP/my-first-words-site/"
+          else
+            echo "::warning::cover-official.webp is missing. The fallback cover will be shown."
+          fi
+
+      - name: Upload static files to existing bucket
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcloud storage rsync --recursive "$RUNNER_TEMP/my-first-words-site" "gs://${{ vars.GCS_BUCKET }}"
+          echo "Upload completed to configured bucket."
+
+# Prerequisites:
+# - Create and authorize the GCS bucket and configure appropriate website hosting.
+# - Create a Google Cloud service account with permission to upload bucket objects.
+# - Configure GitHub OIDC Workload Identity Federation for this repository.
+# - Set repo variables GCS_BUCKET, GCP_WORKLOAD_IDENTITY_PROVIDER, GCP_SERVICE_ACCOUNT.
+# - The bucket is NOT made public by this workflow.
+# - Never store JSON service-account keys in this repository.
