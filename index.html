@@ -53,19 +53,31 @@ body:not(.coverActive) #welcomeCover{display:none}
 body.coverActive header,body.coverActive #home,body.coverActive #game,body.coverActive .foot{display:none!important}
 body:not(.coverActive) #welcomeCover{display:none}
 @media(min-width:700px){main:has(.official-cover){max-width:900px}}
+
+/* Accessible visible controls until the owner's original cover art is supplied. */
+.official-image{object-fit:contain;background:#e7f8ff}
+.official-image-wrap{overflow:visible}
+.cover-hotspot{position:static;color:#293950;background:#fff;border:2px solid #c4d9d6;border-radius:14px;padding:10px;min-height:48px;font-weight:750;min-width:0;box-shadow:0 3px 7px #00000010}
+.cover-hotspot:focus-visible{outline:4px solid #20898e;outline-offset:2px;background:#fff}
+.official-image-wrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:10px}
+.official-image{grid-column:1/-1;border-radius:12px}
+.play-spot{grid-column:1/-1;background:#25834e;color:#fff;font-size:1.2rem;border-color:#25834e}
+.cover-hotspot.en-spot,.cover-hotspot.es-spot{background:#edf9ff}
+.official-cover-actions #coverFallbackPlay{display:none}
+@media(min-width:560px){.official-image-wrap{grid-template-columns:repeat(5,minmax(0,1fr))}.official-image{grid-column:1/-1}.play-spot{grid-column:1/-1}.en-spot,.es-spot{grid-column:span 2}.animals-spot,.food-spot,.toys-spot,.vehicles-spot,.more-spot{font-size:.86rem;padding:8px 3px}}
 </style></head><body><main>
 <header><div><h1>🌈 My First Words</h1><div class="muted" id="tagline">Listen • Learn • Play</div></div><div class="row"><button class="button soft small" id="lang" aria-label="Change language">🇺🇸 EN</button><button class="button soft small" id="sound" aria-label="Mute or unmute">🔊</button></div></header>
 <section id="welcomeCover" class="official-cover" aria-label="Welcome to My First Words">
 <div class="official-image-wrap">
-<img class="official-image" src="cover-official.webp" alt="Colorful My First Words cover with a happy teddy bear, elephant, puppy, kitten, cow and duck" onerror="this.onerror=null;this.src='cover-art.svg'">
-<button class="cover-hotspot play-spot" id="startPlaying" aria-label="Start Playing">▶ <span class="visually-hidden">Start Playing</span></button>
-<button class="cover-hotspot en-spot" id="coverEnglish" aria-label="English"></button>
-<button class="cover-hotspot es-spot" id="coverSpanish" aria-label="Español"></button>
-<button class="cover-hotspot animals-spot" data-cover-game="0" aria-label="Animals"></button>
-<button class="cover-hotspot food-spot" data-cover-game="2" aria-label="Food"></button>
-<button class="cover-hotspot toys-spot" data-cover-game="5" aria-label="Toys"></button>
-<button class="cover-hotspot vehicles-spot" data-cover-game="3" aria-label="Vehicles"></button>
-<button class="cover-hotspot more-spot" id="coverMore" aria-label="All games"></button>
+<img class="official-image" src="cover-art.svg" alt="My First Words — colorful illustrated welcome image with animals">
+<button class="cover-hotspot play-spot" id="startPlaying" aria-label="Start Playing">▶ Start Playing</button>
+<button class="cover-hotspot en-spot" id="coverEnglish" aria-label="English">🇺🇸 English</button>
+<button class="cover-hotspot es-spot" id="coverSpanish" aria-label="Español">🇪🇸 Español</button>
+<button class="cover-hotspot animals-spot" data-cover-game="0" aria-label="Animals">🐶 Animals</button>
+<button class="cover-hotspot food-spot" data-cover-game="2" aria-label="Food">🍎 Food</button>
+<button class="cover-hotspot toys-spot" data-cover-game="5" aria-label="Toys">🧸 Toys</button>
+<button class="cover-hotspot vehicles-spot" data-cover-game="3" aria-label="Vehicles">🚗 Vehicles</button>
+<button class="cover-hotspot more-spot" id="coverMore" aria-label="All games">✨ More</button>
 </div>
 <div class="official-cover-actions"><button type="button" class="button coverPlay" id="coverFallbackPlay">▶ Start Playing</button><button type="button" class="button soft" id="coverLanguage">🇺🇸 English / 🇪🇸 Español</button></div>
 <p class="coverParent" id="coverParent">A joyful learning time with a grown-up 💛</p>
@@ -220,6 +232,12 @@ const cover=document.getElementById('welcomeCover'),play=document.getElementById
 document.body.classList.add('coverActive');
 function update(){
 const spanish=document.documentElement.lang==='es';
+ document.getElementById('startPlaying').textContent=spanish?'▶ ¡A jugar!':'▶ Start Playing';
+ document.querySelector('[data-cover-game="0"]').textContent=spanish?'🐶 Animales':'🐶 Animals';
+ document.querySelector('[data-cover-game="2"]').textContent=spanish?'🍎 Comida':'🍎 Food';
+ document.querySelector('[data-cover-game="5"]').textContent=spanish?'🧸 Juguetes':'🧸 Toys';
+ document.querySelector('[data-cover-game="3"]').textContent=spanish?'🚗 Vehículos':'🚗 Vehicles';
+ document.getElementById('coverMore').textContent=spanish?'✨ Más juegos':'✨ More';
 document.getElementById('coverFallbackPlay').textContent=spanish?'▶ ¡A jugar!':'▶ Start Playing';
 document.getElementById('coverParent').textContent=spanish?'Aprendizaje acompañado de una persona adulta 💛':'A joyful learning time with a grown-up 💛';
 }
