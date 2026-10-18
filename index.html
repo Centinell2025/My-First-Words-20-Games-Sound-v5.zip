@@ -135,7 +135,7 @@ body.coverActive main{max-width:1060px}
 #target{font-size:clamp(1.6rem,5vw,2.15rem);color:#43306e;line-height:1.3}
 #game .actions button{min-height:62px}#next{min-height:64px;font-size:1.15rem}#next:disabled{opacity:.42;cursor:not-allowed}#game .choice{touch-action:manipulation}#feedback{font-size:1.12rem;line-height:1.4}#game .choice.hint{transition:box-shadow .15s ease}
 @media(max-width:360px){#choices .choice{min-height:145px}#choices .emoji{font-size:58px}}
-</style><style>.animal-face-big{font-size:clamp(74px,19vw,112px);line-height:1.4}.choice:has(.animal-face-big){background:#fff5e5;border-color:#ffd07c;min-height:158px}#gameEmoji{font-size:clamp(85px,22vw,124px);line-height:1.25}#soundEffect{background:#ffec9f;color:#5a3807;font-weight:850}</style></head><body><main>
+</style><style>.animal-face-big{font-size:clamp(74px,19vw,112px);line-height:1.4}.choice:has(.animal-face-big){background:#fff5e5;border-color:#ffd07c;min-height:158px}#gameEmoji{font-size:clamp(85px,22vw,124px);line-height:1.25}#soundEffect{background:#ffec9f;color:#5a3807;font-weight:850}</style><style>.lesson-progress{font-weight:850;color:#235f5a;background:#def8ed;border-radius:999px;padding:9px 12px;margin:8px auto 16px;width:fit-content}.choice.hint{border-color:#31a369;background:#e3ffe8}#next:disabled{opacity:.6;cursor:default}</style></head><body><main>
 <header><div><h1>🌈 My First Words Kids</h1><div class="muted" id="tagline">Listen • Learn • Play</div></div><div class="row"><button class="button soft small" id="lang" aria-label="Change language">🇺🇸 EN</button><button class="button soft small" id="sound" aria-label="Mute or unmute">🔊</button></div></header>
 <section id="welcomeCover" class="official-cover" aria-label="Welcome to My First Words">
 <div class="official-image-wrap">
@@ -154,12 +154,37 @@ body.coverActive main{max-width:1060px}
 </section><section id="home"><div class="hero"><div><h2 id="welcome">Let's play together!</h2><p class="muted" id="subtitle">20 playful games with sound</p></div><div class="bear" role="img" aria-label="Smiling teddy bear">🧸</div></div>
 <div class="row" style="justify-content:space-between;margin-bottom:12px"><h2 id="pick">Choose a game</h2><button class="button soft small" id="test">🔊 Test sound</button></div><div class="grid" id="tiles"></div>
 <div class="panel"><strong id="parentTitle">💜 For parents</strong><p class="muted" id="parentIntro">Stay and play with your child. Repeat words, make gestures, and use real objects. For the youngest toddlers, prioritize off-screen interaction.</p><div class="panel" id="voiceSettings"><strong>🔊 <span id="voiceTitle">Voice settings (grown-ups)</span></strong><div class="row" style="margin-top:10px"><label for="voiceSpeed" id="speedLabel">Speaking speed</label><select id="voiceSpeed" aria-label="Speaking speed"><option value="0.78">Slow / Lento</option><option value="0.88" selected>Clear / Claro (2 años)</option><option value="1">Normal</option></select></div><div class="row" style="margin-top:10px"><label for="voiceChoice" id="voiceLabel">Voice</label><select id="voiceChoice" aria-label="Select a voice"><option value="">Automatic</option></select></div><button class="button soft small" style="margin-top:10px" id="voicePreview">▶️ Preview voice</button><p class="muted small" id="voiceNote">Voices depend on the phone. Tap a sound button to begin playback.</p></div><label for="age" id="ageLabel">Age:</label> <select id="age"><option value="12">12–18 months</option><option value="18">18–24 months</option><option value="24" selected>24–36 months</option></select><p class="muted" id="ageTip">Start with one familiar word and point to a real object.</p></div></section>
-<section id="game" class="hidden"><button class="button soft" id="back">← All games</button><div class="panel"><div class="emoji" id="gameEmoji">🧸</div><h2 id="gameTitle"></h2><p class="muted" id="instructions"></p><p id="target"></p><div class="actions"><button class="button soft" id="repeat">🔊 Listen again</button><button class="button soft" id="soundEffect">🎵 Sound</button></div><div class="grid" id="choices"></div><p id="feedback" class="feedback" aria-live="polite"></p><button class="button" style="width:100%" id="next">Next →</button></div><div class="panel" style="background:#e9f6e9;text-align:left"><strong id="grownup">💚 Play together</strong><p class="muted" id="coach"></p></div></section>
+<section id="game" class="hidden"><button class="button soft" id="back">← All games</button><div class="panel"><div class="emoji" id="gameEmoji">🧸</div><h2 id="gameTitle"></h2><div class="lesson-progress" id="lessonProgress" aria-live="off"></div><p class="muted" id="instructions"></p><p id="target"></p><div class="actions"><button class="button soft" id="repeat">🔊 Listen again</button><button class="button soft" id="soundEffect">🎵 Sound</button></div><div class="grid" id="choices"></div><p id="feedback" class="feedback" aria-live="polite"></p><button class="button" style="width:100%" id="next">Next →</button></div><div class="panel" style="background:#e9f6e9;text-align:left"><strong id="grownup">💚 Play together</strong><p class="muted" id="coach"></p></div></section>
 <p class="foot" id="footer">No ads · No microphone · Adult supervision · Short, shared play sessions</p></main>
 <script>
 'use strict';
 const GAMES=[["🐶","Animals","Animales",[["🐶","Dog","Perro"],["🐱","Cat","Gato"],["🐮","Cow","Vaca"],["🐸","Frog","Rana"]]],["👋","Greetings","Saludos",[["👋","Hello","Hola"],["🙋","Bye","Adiós"],["👏","Clap","Aplaude"],["❤️","Love","Amor"]]],["🍎","Food","Comida",[["🍎","Apple","Manzana"],["🍌","Banana","Banana"],["🥛","Milk","Leche"],["🍞","Bread","Pan"]]],["🚗","Vehicles","Vehículos",[["🚗","Car","Auto"],["🚌","Bus","Autobús"],["🚂","Train","Tren"],["✈️","Plane","Avión"]]],["🎨","Colors","Colores",[["🔴","Red","Rojo"],["🔵","Blue","Azul"],["🟢","Green","Verde"],["🟡","Yellow","Amarillo"]]],["🧸","Toys","Juguetes",[["🧸","Teddy bear","Osito"],["⚽","Ball","Pelota"],["🪁","Kite","Cometa"],["🪀","Yo-yo","Yoyó"]]],["👀","Body","Cuerpo",[["👀","Eyes","Ojos"],["👃","Nose","Nariz"],["👂","Ear","Oreja"],["✋","Hand","Mano"]]],["🏠","Home","Casa",[["🛏️","Bed","Cama"],["🚪","Door","Puerta"],["🪑","Chair","Silla"],["💡","Light","Luz"]]],["👨‍👩‍👧","Family","Familia",[["👩","Mom","Mamá"],["👨","Dad","Papá"],["👶","Baby","Bebé"],["👵","Grandma","Abuela"]]],["🐥","Baby Animals","Crías",[["🐥","Chick","Pollito"],["🐈","Kitten","Gatito"],["🐑","Lamb","Cordero"],["🐣","Egg","Huevo"]]],["💧","Requests","Pedir",[["💧","Water","Agua"],["🥛","More milk","Más leche"],["🍪","Cookie","Galleta"],["🧸","My teddy","Mi osito"]]],["😊","Feelings","Emociones",[["😊","Happy","Feliz"],["😢","Sad","Triste"],["😴","Sleepy","Con sueño"],["😮","Surprised","Sorprendido"]]],["🐘","Sizes","Tamaños",[["🐘","Big","Grande"],["🐭","Small","Pequeño"],["🦒","Tall","Alto"],["🐜","Tiny","Diminuto"]]],["🌞","Nature","Naturaleza",[["☀️","Sun","Sol"],["🌳","Tree","Árbol"],["🌸","Flower","Flor"],["☁️","Cloud","Nube"]]],["🎵","Music","Música",[["👏","Clap","Aplaude"],["🥁","Drum","Tambor"],["🔔","Bell","Campana"],["🎶","Sing","Canta"]]],["👕","Clothes","Ropa",[["👕","Shirt","Camisa"],["🧦","Socks","Calcetines"],["👟","Shoes","Zapatos"],["🧢","Hat","Gorra"]]],["🫧","Bath Time","Baño",[["🫧","Bubbles","Burbujas"],["🦆","Duck","Pato"],["🧼","Soap","Jabón"],["🛁","Bath","Baño"]]],["🔢","Numbers","Números",[["1️⃣","One","Uno"],["2️⃣","Two","Dos"],["3️⃣","Three","Tres"],["⭐","Star","Estrella"]]],["🌙","Bedtime","Dormir",[["🌙","Moon","Luna"],["⭐","Star","Estrella"],["🛏️","Bed","Cama"],["📖","Book","Libro"]]],["💬","Little Phrases","Frases",[["🥛","More milk","Más leche"],["👋","Bye-bye","Adiós"],["🚗","Go car","Auto va"],["🧸","My bear","Mi osito"]]]];
 let lang='en',muted=false,gameIndex=-1,step=0,correct=false,audioContext=null;
+let advanceTimer=null;
+function cancelAdvance(){if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null}}
+function advanceLesson(){
+  cancelAdvance();
+  if(gameIndex<0)return;
+  step+=1;
+  if(step>=4){
+    step=0;
+    if(gameIndex<GAMES.length-1){
+      gameIndex+=1;
+      el('feedback').textContent=tr('Next game! 🌈','¡Siguiente juego! 🌈');
+      renderGame();
+    }else{
+      gameIndex=-1;
+      if('speechSynthesis' in window)speechSynthesis.cancel();
+      el('game').classList.add('hidden');
+      el('home').classList.remove('hidden');
+      renderHome();
+      el('welcome').textContent=tr('You finished all 20 games! 🌟','¡Terminaste los 20 juegos! 🌟');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  }else renderGame();
+}
+function scheduleAdvance(){cancelAdvance();advanceTimer=setTimeout(()=>{advanceTimer=null;advanceLesson()},2600)}
+
 const el=id=>document.getElementById(id);const sayWord=item=>item[lang==='en'?1:2];const category=g=>g[lang==='en'?1:2];
 const tr=(en,es)=>lang==='en'?en:es;
 // Spoken words: choose a matching native voice and keep pronunciation natural.
@@ -214,7 +239,7 @@ function talk(text){
 }
 function tone(freq=650,duration=.12){if(muted)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audioContext=audioContext||new AC();if(audioContext.state==='suspended')audioContext.resume();const o=audioContext.createOscillator(),gain=audioContext.createGain();o.type='sine';o.frequency.value=freq;gain.gain.setValueAtTime(.022,audioContext.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+duration);o.connect(gain);gain.connect(audioContext.destination);o.start();o.stop(audioContext.currentTime+duration)}catch(e){console.warn(e)}}
 function effects(){tone(520,.12);setTimeout(()=>tone(650,.10),150)}
-function renderHome(){el('tagline').textContent=tr('Listen • Learn • Play','Escucha • Aprende • Juega');el('welcome').textContent=tr("Let's play together!",'¡Vamos a jugar!');el('subtitle').textContent=tr('20 playful games with sound','20 juegos divertidos con sonido');el('pick').textContent=tr('Choose a game','Elige un juego');el('test').textContent=tr('🔊 Test sound','🔊 Probar sonido');el('parentTitle').textContent=tr('💜 For parents','💜 Para familias');el('parentIntro').textContent=tr('Stay and play with your child. Repeat words, make gestures, and use real objects. For the youngest toddlers, prioritize off-screen interaction.','Jueguen juntos. Repitan palabras, hagan gestos y usen objetos reales. Para los más pequeños, den prioridad a la interacción sin pantallas.');el('ageLabel').textContent=tr('Age:','Edad:');el('lang').textContent=lang==='en'?'🇺🇸 EN':'🇪🇸 ES';el('voiceTitle').textContent=tr('Voice settings (grown-ups)','Configuración de voz (adultos)');el('speedLabel').textContent=tr('Speaking speed','Velocidad de voz');el('voiceLabel').textContent=tr('Voice','Voz');el('voicePreview').textContent=tr('▶️ Preview voice','▶️ Probar voz');el('voiceNote').textContent=tr('Voices depend on the phone. Tap a sound button to begin playback.','Las voces dependen del teléfono. Toque un botón para reproducir el sonido.');updateVoiceChoices();el('footer').textContent=tr('No ads · No microphone · Adult supervision · Short, shared play sessions','Sin anuncios · Sin micrófono · Supervisión adulta · Sesiones breves y compartidas');el('tiles').replaceChildren();GAMES.forEach((g,i)=>{const b=document.createElement('button');b.className='tile';const icon=document.createElement('span');icon.className='emoji';icon.textContent=g[0];const title=document.createElement('strong');title.textContent=category(g);const help=document.createElement('div');help.className='muted small';help.textContent=tr('🔊 Play','🔊 Jugar');b.append(icon,title,help);b.onclick=()=>{gameIndex=i;step=0;el('home').classList.add('hidden');el('game').classList.remove('hidden');renderGame();};el('tiles').append(b)});updateAge();}
+function renderHome(){el('tagline').textContent=tr('Listen • Learn • Play','Escucha • Aprende • Juega');el('welcome').textContent=tr("Let's play together!",'¡Vamos a jugar!');el('subtitle').textContent=tr('20 playful games with sound','20 juegos divertidos con sonido');el('pick').textContent=tr('Choose a game','Elige un juego');el('test').textContent=tr('🔊 Test sound','🔊 Probar sonido');el('parentTitle').textContent=tr('💜 For parents','💜 Para familias');el('parentIntro').textContent=tr('Stay and play with your child. Repeat words, make gestures, and use real objects. For the youngest toddlers, prioritize off-screen interaction.','Jueguen juntos. Repitan palabras, hagan gestos y usen objetos reales. Para los más pequeños, den prioridad a la interacción sin pantallas.');el('ageLabel').textContent=tr('Age:','Edad:');el('lang').textContent=lang==='en'?'🇺🇸 EN':'🇪🇸 ES';el('voiceTitle').textContent=tr('Voice settings (grown-ups)','Configuración de voz (adultos)');el('speedLabel').textContent=tr('Speaking speed','Velocidad de voz');el('voiceLabel').textContent=tr('Voice','Voz');el('voicePreview').textContent=tr('▶️ Preview voice','▶️ Probar voz');el('voiceNote').textContent=tr('Voices depend on the phone. Tap a sound button to begin playback.','Las voces dependen del teléfono. Toque un botón para reproducir el sonido.');updateVoiceChoices();el('footer').textContent=tr('No ads · No microphone · Adult supervision · Short, shared play sessions','Sin anuncios · Sin micrófono · Supervisión adulta · Sesiones breves y compartidas');el('tiles').replaceChildren();GAMES.forEach((g,i)=>{const b=document.createElement('button');b.className='tile';const icon=document.createElement('span');icon.className='emoji';icon.textContent=g[0];const title=document.createElement('strong');title.textContent=category(g);const help=document.createElement('div');help.className='muted small';help.textContent=tr('🔊 Play','🔊 Jugar');b.append(icon,title,help);b.onclick=()=>{cancelAdvance();gameIndex=i;step=0;el('home').classList.add('hidden');el('game').classList.remove('hidden');renderGame();};el('tiles').append(b)});updateAge();}
 function updateAge(){let value=el('age').value;el('ageTip').textContent=value==='12'?tr('Start with one familiar word and point to a real object.','Comiencen con una palabra familiar y señalen un objeto real.'):value==='18'?tr('Model short requests and celebrate gestures too.','Modelen peticiones breves y celebren también los gestos.'):tr('Model two-word phrases and take conversational turns.','Modelen frases de dos palabras y conversen por turnos.');}
 const ANIMAL_LINES={
   Dog:['The dog says woof, woof!','¡El perro hace guau, guau!'],
@@ -231,7 +256,9 @@ function animalSentence(item) {
  return sounds ? sounds[lang==='es'?1:0] : '';
 }
 function renderGame(){
+cancelAdvance();
 const g=GAMES[gameIndex],target=g[3][step%4];
+el('lessonProgress').textContent=tr('Game ','Juego ')+(gameIndex+1)+'/20  ·  '+tr('Picture ','Imagen ')+(step+1)+'/4';
 correct=false;
 el('gameEmoji').textContent=animalSentence(target)?target[0]:g[0];
 el('gameTitle').textContent=category(g);
@@ -275,8 +302,9 @@ for(const {x} of items){
       el('next').disabled=false;
       mark(b,'correct');
       buttons.forEach(other=>other.disabled=true);
-      el('feedback').textContent=tr('Great job! 🌟','¡Muy bien! 🌟');
+      el('feedback').textContent=tr('Great job! Next picture soon! 🌟','¡Muy bien! ¡Pronto viene otra imagen! 🌟');
       talk(tr('Well done! ','¡Muy bien! ')+sayWord(x));
+      scheduleAdvance();
     }else{
       const correctButton=buttons.find(other=>other.dataset.correct==='true');
       if(correctButton)correctButton.classList.add('hint');
@@ -291,8 +319,8 @@ talk(animalSentence(target)?sayWord(target)+'. '+animalSentence(target):tr('Find
 
 el('voicePreview').onclick=()=>talk(tr('Hello! Apple. Ball. Teddy bear.','¡Hola! Manzana. Pelota. Osito.'));el('test').onclick=()=>{tone();talk(tr('Hello! Let us play together!','¡Hola! ¡Vamos a jugar!'))};
 el('sound').onclick=()=>{muted=!muted;el('sound').textContent=muted?'🔇':'🔊';if(muted&&window.speechSynthesis)speechSynthesis.cancel()};
-el('lang').onclick=()=>{lang=lang==='en'?'es':'en';document.documentElement.lang=lang;renderHome();if(gameIndex>=0&&!el('game').classList.contains('hidden'))renderGame()};
-el('age').onchange=updateAge;el('back').onclick=()=>{if('speechSynthesis'in window)speechSynthesis.cancel();el('game').classList.add('hidden');el('home').classList.remove('hidden')};el('repeat').onclick=()=>{const item=GAMES[gameIndex][3][step%4];talk(animalSentence(item)?sayWord(item)+'. '+animalSentence(item):tr('Find the picture. ','Busca el dibujo. ')+sayWord(item))};el('soundEffect').onclick=()=>{const item=GAMES[gameIndex]?.[3]?.[step%4];const phrase=item&&animalSentence(item);if(phrase){tone(540,.12);talk(sayWord(item)+'. '+phrase)}else effects()};el('next').onclick=()=>{step++;renderGame()};renderHome();
+el('lang').onclick=()=>{cancelAdvance();lang=lang==='en'?'es':'en';document.documentElement.lang=lang;renderHome();if(gameIndex>=0&&!el('game').classList.contains('hidden'))renderGame()};
+el('age').onchange=updateAge;el('back').onclick=()=>{cancelAdvance();gameIndex=-1;if('speechSynthesis'in window)speechSynthesis.cancel();el('game').classList.add('hidden');el('home').classList.remove('hidden')};el('repeat').onclick=()=>{const item=GAMES[gameIndex][3][step%4];talk(animalSentence(item)?sayWord(item)+'. '+animalSentence(item):tr('Find the picture. ','Busca el dibujo. ')+sayWord(item))};el('soundEffect').onclick=()=>{const item=GAMES[gameIndex]?.[3]?.[step%4];const phrase=item&&animalSentence(item);if(phrase){tone(540,.12);talk(sayWord(item)+'. '+phrase)}else effects()};el('next').onclick=advanceLesson;renderHome();
 if('serviceWorker' in navigator && location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script><style>
 /* Touch-first toddler experience */ 
