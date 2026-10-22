@@ -1,0 +1,15 @@
+const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
+const source='/* Local progress only:'+fs.readFileSync(__dirname+'/index.html','utf8').split('/* Local progress only:')[1].split('</script>')[0];
+function fixture(saved='[]',fail=false){
+ const data=new Map([['my-first-words-progress-v1',saved]]),nodes={progressText:{},progressFill:{style:{}},game:{querySelector:()=>({insertBefore(){},querySelector(){}})}};
+ let click,translate;nodes.choices={addEventListener:(name,fn)=>click=fn,contains:()=>true};
+ const context={Set,JSON,gameIndex:0,step:0,document:{documentElement:{lang:'en'},getElementById:id=>nodes[id],createElement:()=>({})},MutationObserver:class{constructor(fn){translate=fn}observe(){}},localStorage:{getItem:key=>{if(fail)throw Error('disabled');return data.get(key)},setItem:(key,value)=>{if(fail)throw Error('disabled');data.set(key,value)}}};
+ vm.runInNewContext(source,context);return{context,nodes,data,win:()=>click({target:{closest:()=>({dataset:{correct:'true'}})}}),translate:()=>translate()};
+}
+ test('one picture counts once after changing language and the count survives a fresh page',()=>{
+ const f=fixture();f.win();assert.equal(f.nodes.progressText.textContent,'Pictures explored: 1');f.context.document.documentElement.lang='es';f.translate();f.win();assert.equal(f.nodes.progressText.textContent,'Imágenes exploradas: 1');
+ const restored=fixture(f.data.get('my-first-words-progress-v1'));assert.equal(restored.nodes.progressText.textContent,'Pictures explored: 1');
+ });
+ test('identical words in different activities count as separate pictures',()=>{const f=fixture();f.win();f.context.gameIndex=16;f.win();assert.equal(f.nodes.progressText.textContent,'Pictures explored: 2');});
+ test('corrupt or unavailable storage does not stop play, and invalid IDs cannot inflate progress',()=>{const f=fixture('["0:0","0:0","19:3","20:0","-1:0",null]');assert.equal(f.nodes.progressText.textContent,'Pictures explored: 2');assert.equal(f.nodes.progressFill.style.width,'2.5%');const corrupt=fixture('{broken');corrupt.win();assert.equal(corrupt.nodes.progressText.textContent,'Pictures explored: 1');const blocked=fixture('[]',true);blocked.win();assert.equal(blocked.nodes.progressText.textContent,'Pictures explored: 1');});
+ test('upgrading the game cache preserves caches owned by other apps',async()=>{const handlers={},deleted=[],waits=[];vm.runInNewContext(fs.readFileSync(__dirname+'/sw.js','utf8'),{URL,Set,Promise,fetch, self:{registration:{scope:'https://words.test/'},addEventListener:(name,fn)=>handlers[name]=fn,clients:{claim:async()=>{}},skipWaiting(){}},caches:{keys:async()=>['my-first-words-kids-auto-advance-v16','other-app-v1'],delete:async key=>deleted.push(key)}});handlers.activate({waitUntil:p=>waits.push(p)});await Promise.all(waits);assert.deepEqual(deleted,['my-first-words-kids-auto-advance-v16']);let intercepted=false;handlers.fetch({request:{method:'GET',url:'https://words.test/api/session'},respondWith:()=>intercepted=true});assert.equal(intercepted,false);});
