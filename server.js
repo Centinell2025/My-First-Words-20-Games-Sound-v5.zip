@@ -2,7 +2,7 @@ const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
 const types={".html":"text/html; charset=utf-8",".svg":"image/svg+xml",".webmanifest":"application/manifest+json",".js":"text/javascript; charset=utf-8"};
-const files=new Set(["/","/index.html","/icon.svg","/cover-art.svg","/manifest.webmanifest","/sw.js"]);
+const files=new Set(["/","/index.html","/icon.svg","/cover-art.svg","/manifest.webmanifest","/sw.js","/languages.js","/app.js"]);
 http.createServer((req,res)=>{
  const pathname=new URL(req.url,"http://localhost").pathname;
  if(pathname==="/health"){res.writeHead(200,{"Content-Type":"text/plain"});return res.end("ok")}
