@@ -5,6 +5,25 @@ let sourceLanguage='en',targetLanguage='es',muted=false,gameIndex=-1,step=0,corr
 let advanceTimer=null,audioContext=null,availableVoices=[],speechRun=0,cancelUtterance=null;
 const explored=new Map();
 const voicePreferences={};
+const PROGRESS_KEY='mfw-progress-v2';
+function loadProgress(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');
+    if(!saved||typeof saved!=='object'||Array.isArray(saved))return;
+    for(const [pair,ids] of Object.entries(saved)){
+      if(typeof pair!=='string'||!Array.isArray(ids))continue;
+      const valid=ids.filter(id=>/^\d{1,2}:\d$/.test(String(id)));
+      explored.set(pair,new Set(valid));
+    }
+  }catch{/* Progress remains usable in memory when storage is blocked or corrupt. */}
+}
+function saveProgress(){
+  try{
+    const payload={};
+    for(const [pair,ids] of explored)payload[pair]=[...ids];
+    localStorage.setItem(PROGRESS_KEY,JSON.stringify(payload));
+  }catch{/* Progress remains usable for the current session. */}
+}
 try{
   const saved=JSON.parse(localStorage.getItem('mfw-language-pair')||'null');
   if(saved&&codes.includes(saved.source)&&codes.includes(saved.target)&&saved.source!==saved.target){
@@ -177,7 +196,7 @@ function renderGame(playAudio=true){
       const mark=document.createElement('span');mark.className='answer-mark';mark.textContent='✓';mark.setAttribute('aria-hidden','true');b.append(mark);
       for(const button of el('choices').querySelectorAll('button'))button.disabled=true;
       el('next').disabled=false;el('feedback').textContent=ui('good');
-      if(!explored.has(pairKey()))explored.set(pairKey(),new Set());explored.get(pairKey()).add(gameIndex+':'+step);updateProgress();
+      if(!explored.has(pairKey()))explored.set(pairKey(),new Set());explored.get(pairKey()).add(gameIndex+':'+step);saveProgress();updateProgress();
       praiseAndAdvance(target);
     };el('choices').append(b);
   }
@@ -236,6 +255,6 @@ el('age').onchange=updateAge;
 el('back').onclick=()=>{cancelAdvance();stopSpeech();gameIndex=-1;el('game').classList.add('hidden');el('home').classList.remove('hidden');};
 el('repeat').onclick=repeatCurrent;el('soundEffect').onclick=playEffect;el('next').onclick=advanceLesson;
 document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAdvance();stopSpeech();}});
-document.body.classList.add('coverActive');renderHome();updateCover();renderLanguageSettings();updateProgress();
+loadProgress();document.body.classList.add('coverActive');renderHome();updateCover();renderLanguageSettings();updateProgress();
 if('speechSynthesis' in window){window.speechSynthesis.addEventListener('voiceschanged',refreshVoices);refreshVoices();}
 if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
